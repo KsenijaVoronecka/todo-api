@@ -3,6 +3,7 @@ package com.ksenija.todo_api.service;
 import com.ksenija.todo_api.model.Task;
 import com.ksenija.todo_api.model.TaskStatus;
 import com.ksenija.todo_api.repository.TaskRepository;
+import com.ksenija.todo_api.exception.TaskNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -22,7 +23,7 @@ public class TaskService {
 
     public Task getById(Long id) {
         return taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found: " + id));
+                .orElseThrow(() -> new TaskNotFoundException(id));
     }
 
     public Task create(Task task) {

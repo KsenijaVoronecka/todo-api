@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import java.time.format.DateTimeParseException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,4 +36,14 @@ public class GlobalExceptionHandler {
                 });
         return errors;
     }
+
+    @ExceptionHandler(DateTimeParseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleDateTimeParseError(DateTimeParseException ex) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", "Invalid date format. Use: dd-MM-yyyy HH:mm:ss");
+        error.put("provided", ex.getParsedString());
+        return error;
+    }
+
 }
